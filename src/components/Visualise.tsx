@@ -170,8 +170,12 @@ const Visualise: React.FC = () => {
         pathname: "/billboard",
         query: { imageUrl: image.image_url },
       });
-    } else if (image.type === "logo") {
-      router.push(`/tshirt`);
+    } 
+    if (image.type === "logo") {
+      router.push({
+        pathname: "/tshirt",
+        query: { imageUrl: image.image_url },
+      });
     }
   };
   return (
