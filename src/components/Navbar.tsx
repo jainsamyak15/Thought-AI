@@ -79,7 +79,7 @@ const Navbar = () => {
                   </button>
                   <button 
                     onClick={() => router.push('/auth/login')}
-                    className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-purple-500 to-pink-600 rounded-full hover:opacity-90 transition-opacity"
+                    className="px-4 py-2 text-sm font-medium bg-[#FF6500]/80  rounded-full hover:opacity-90 transition-opacity"
                   >
                     Get Started
                   </button>
@@ -87,7 +87,7 @@ const Navbar = () => {
               ) : (
                 <button 
                   onClick={handleSignOut}
-                  className="px-4 py-2 text-sm font-medium bg-red-500 hover:bg-red-600 rounded-full transition-colors"
+                  className="px-4 py-2 text-sm font-medium bg-[#FF6500]/80 hover:bg-red-600 rounded-full transition-colors"
                 >
                   Sign Out
                 </button>
@@ -125,7 +125,7 @@ const Navbar = () => {
                         setIsMobileMenuOpen(false);
                         router.push('/auth/login');
                       }}
-                      className="w-full px-4 py-2 text-sm font-medium bg-gradient-to-r from-purple-500 to-pink-600 rounded-full hover:opacity-90 transition-opacity"
+                      className="w-full px-4 py-2 text-sm font-medium bg-[#FF6500]/80 rounded-full hover:opacity-90 transition-opacity"
                     >
                       Get Started
                     </button>
