@@ -32,7 +32,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm bg-black/50">
+    <nav className="mt-[40px] mx-[250px] rounded-full fixed top-0 left-0 right-0 z-50 backdrop-blur-sm bg-black/50">
       <div className="container mx-auto px-4 sm:px-6 py-4">
         <div className="flex items-center justify-between">
           <motion.div
@@ -40,8 +40,8 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center space-x-8"
           >
-            <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
-              THOUGHT AI
+            <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r text-[#FF6500]/80 text-transparent bg-clip-text">
+              thought ai
             </Link>
             
             <div className="hidden md:flex space-x-6">

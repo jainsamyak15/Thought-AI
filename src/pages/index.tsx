@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import Typewriter from 'typewriter-effect';
-import { useRouter } from 'next/router';
-import Navbar from '../components/Navbar';
-import Features from '../components/Features';
-import Pricing from '../components/Pricing';
-import FAQ from '../components/FAQ';
-import { cn } from '../utils/cn';
-import { supabase } from '../lib/supabase';
-import GeneratedLogos from '../components/GeneratedLogos';
-import GridTrailEffect from '../components/GridTrailEffect';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import Typewriter from "typewriter-effect";
+import { useRouter } from "next/router";
+import Navbar from "../components/Navbar";
+import Features from "../components/Features";
+import Pricing from "../components/Pricing";
+import FAQ from "../components/FAQ";
+import { cn } from "../utils/cn";
+import { supabase } from "../lib/supabase";
+import GeneratedLogos from "../components/GeneratedLogos";
+import GridTrailEffect from "../components/GridTrailEffect";
 
 const Home = () => {
   const router = useRouter();
@@ -17,7 +17,9 @@ const Home = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       setIsAuthenticated(!!user);
     };
 
@@ -26,19 +28,19 @@ const Home = () => {
 
   const handleStartCreating = () => {
     if (isAuthenticated) {
-      router.push('/profile');
+      router.push("/profile");
     } else {
-      router.push('/auth/login');
+      router.push("/auth/login");
     }
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-[#151515] text-white">
       <GridTrailEffect />
       {/* Background Grid */}
-      <div className="fixed inset-0 z-0">
+      {/* <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]" />
-      </div>
+      </div> */}
 
       <Navbar />
 
@@ -51,16 +53,20 @@ const Home = () => {
             transition={{ delay: 0.2 }}
             className="max-w-4xl mx-auto text-center"
           >
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white text-transparent bg-clip-text">
               <Typewriter
                 options={{
-                  strings: ['Create stunning designs', 'Generate unique logos', 'Design Twitter banners'],
+                  strings: [
+                    "Create stunning designs",
+                    "Generate unique logos",
+                    "Design Twitter banners",
+                  ],
                   autoStart: true,
                   loop: true,
                 }}
               />
             </h1>
-            <p className="text-xl md:text-2xl text-gray-400 mb-8">
+            <p className="text-xl md:text-3xl italic text-white mb-8">
               Transform your ideas into stunning visuals with the power of AI
             </p>
             <motion.div
@@ -69,14 +75,18 @@ const Home = () => {
               transition={{ delay: 0.4 }}
               className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-6"
             >
-              <button 
+              <button
                 onClick={handleStartCreating}
-                className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full text-lg font-medium hover:opacity-90 transition-opacity w-full md:w-auto"
+                className="px-8 py-4 bg-[#FF6500]/80 rounded-full text-lg font-medium hover:opacity-90 transition-opacity w-full md:w-auto"
               >
                 Start Creating
               </button>
-              <button 
-                onClick={() => document.querySelector('#features')?.scrollIntoView({ behavior: 'smooth' })}
+              <button
+                onClick={() =>
+                  document
+                    .querySelector("#features")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
                 className="px-8 py-4 bg-white/10 rounded-full text-lg font-medium hover:bg-white/20 transition-colors w-full md:w-auto"
               >
                 Learn More
@@ -92,20 +102,26 @@ const Home = () => {
       </section>
 
       {/* Features Marquee */}
-      <div className="py-12 bg-gradient-to-r from-purple-900/20 to-pink-900/20 overflow-hidden">
+      <div className="py-12 bg-[#FF6500]/70 overflow-hidden">
         <MarqueeContent />
       </div>
 
       {/* Main Sections */}
       <Features />
       <GeneratedLogos />
-      <Pricing />
+      {/* <Pricing /> */}
       <FAQ />
     </div>
   );
 };
 
-const FloatingElement = ({ className, delay }: { className: string; delay: number }) => {
+const FloatingElement = ({
+  className,
+  delay,
+}: {
+  className: string;
+  delay: number;
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0 }}
@@ -138,10 +154,20 @@ const MarqueeContent = () => {
   return (
     <div className="relative flex overflow-x-hidden">
       <div className="animate-marquee whitespace-nowrap flex items-center">
-        {features.concat(features).map((feature, index) => (
+        {/* Repeat features enough to ensure seamless looping */}
+        {features.map((feature, index) => (
           <span
             key={index}
-            className="mx-4 text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text"
+            className="mx-4 text-3xl font-bold text-white italic text-transparent bg-clip-text"
+          >
+            {feature}
+          </span>
+        ))}
+        {/* Repeat the same features again for seamless looping */}
+        {features.map((feature, index) => (
+          <span
+            key={index + features.length}
+            className="mx-4 text-3xl font-bold text-white italic text-transparent bg-clip-text"
           >
             {feature}
           </span>

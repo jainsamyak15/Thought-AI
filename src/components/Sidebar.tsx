@@ -70,8 +70,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
             <div className="flex flex-col h-full pt-16 md:pt-5 pb-4">
               <div className="flex-1 flex flex-col px-6">
                 <div className="mb-8">
-                  <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
-                    THOUGHT AI
+                  <h1 className="text-2xl font-bold text-[#F2613F] text-transparent bg-clip-text">
+                    thought ai
                   </h1>
                 </div>
 
