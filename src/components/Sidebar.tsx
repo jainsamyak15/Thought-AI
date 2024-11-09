@@ -7,6 +7,7 @@ import {
   Image as ImageIcon, 
   Twitter, 
   MessageSquare, 
+  Sparkles,
   User as UserIcon,
   LogOut,
   Menu,
@@ -39,6 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
 
   const menuItems = [
     { icon: <Home size={24} />, label: 'Home', href: '/' },
+    { icon: <Sparkles size={24} />, label: 'Brand Name Generator', href: '/brand-name' },
     { icon: <ImageIcon size={24} />, label: 'Logo Generator', href: '/logo' },
     { icon: <Twitter size={24} />, label: 'Banner Generator', href: '/banner' },
     { icon: <MessageSquare size={24} />, label: 'Tagline Generator', href: '/tagline' },
