@@ -14,7 +14,7 @@ function Logo() {
       position={[-0.14, 1, -0.654]} // Minimal Z offset to prevent z-fighting
       rotation={[-0.2, 0, 0]}
     >
-      <planeGeometry args={[2, 1]} />
+      <planeGeometry args={[2.27, 0.91]} />
       <meshStandardMaterial 
         map={texture}
         transparent={true}
@@ -52,7 +52,7 @@ function MeshComponent() {
     <group ref={groupRef}>
       <primitive object={gltf.scene} />
       {/* Place the logo as a child of the specific mesh in the t-shirt model */}
-      <group position={[0, 0.3, 0.25]} rotation={[0.2, 0, 0]}>
+      <group position={[0.14, -0.34, 0.25]} rotation={[0.2, 0, 0]}>
         <Logo />
       </group>
     </group>
