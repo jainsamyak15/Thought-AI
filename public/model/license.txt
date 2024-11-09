@@ -1,0 +1,11 @@
+Model Information:
+* title:	T-Shirt On Hanger
+* source:	https://sketchfab.com/3d-models/t-shirt-on-hanger-5263eaaaed8041ef8413746306284bb8
+* author:	feisalkassim (https://sketchfab.com/FeisalKassim)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "T-Shirt On Hanger" (https://sketchfab.com/3d-models/t-shirt-on-hanger-5263eaaaed8041ef8413746306284bb8) by feisalkassim (https://sketchfab.com/FeisalKassim) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
