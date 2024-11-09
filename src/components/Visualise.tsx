@@ -9,6 +9,7 @@ import {
   SparklesIcon,
   StarIcon,
 } from "@heroicons/react/24/solid";
+import { useRouter } from "next/router";
 
 interface GeneratedImage {
   id: string;
@@ -40,6 +41,8 @@ const Visualise: React.FC = () => {
   });
   const [filteredImages, setFilteredImages] = useState(images);
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
   useEffect(() => {
     const initializeUserData = async () => {
@@ -148,23 +151,6 @@ const Visualise: React.FC = () => {
       </div>
     );
   }
-  const handleDownload = async (imageUrl: string) => {
-    try {
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = downloadUrl;
-      link.download = `ai-design-${Date.now()}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
-    } catch (error) {
-      console.error("Error downloading image:", error);
-      alert("Failed to download image. Please try again.");
-    }
-  };
 
   const handleAllImages = () => {
     setFilteredImages(images);
@@ -178,6 +164,16 @@ const Visualise: React.FC = () => {
     setFilteredImages(images.filter((image) => image.type === "banner"));
   };
 
+  const handleVisualise = (image: GeneratedImage) => {
+    if (image.type === "banner") {
+      router.push({
+        pathname: "/billboard",
+        query: { imageUrl: image.image_url },
+      });
+    } else if (image.type === "logo") {
+      router.push(`/tshirt`);
+    }
+  };
   return (
     <div className="min-h-screen bg-gradient-to-br from-black to-purple-900 text-white">
       <button
@@ -232,9 +228,6 @@ const Visualise: React.FC = () => {
                       />
                     </div>
                     <div className="p-4">
-                      <p className="text-sm font-medium mb-1 capitalize">
-                        Type: {image.type}
-                      </p>
                       <p className="text-sm text-gray-400">
                         Prompt: {image.prompt}
                       </p>
@@ -243,11 +236,12 @@ const Visualise: React.FC = () => {
                         {new Date(image.created_at).toLocaleDateString()}
                       </p>
                       <button
-                        onClick={() => handleDownload(image.image_url)}
+                        onClick={() => handleVisualise(image)}
                         className="mt-4 inline-flex items-center bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 px-4 py-2 rounded-lg transition-colors text-sm"
                       >
-                        <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
-                        Download
+                        {image.type === "logo"
+                          ? "See this on T-Shirt"
+                          : "See this on Billboard"}
                       </button>
                     </div>
                   </motion.div>
