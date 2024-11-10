@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Home, 
-  Image as ImageIcon, 
-  Twitter, 
-  MessageSquare, 
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Home,
+  Image as ImageIcon,
+  Twitter,
+  MessageSquare,
   Sparkles,
   User as UserIcon,
   Eye,
   LogOut,
   Menu,
-  X
-} from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { User } from '@supabase/supabase-js';
+  X,
+} from "lucide-react";
+import { supabase } from "../lib/supabase";
+import { User } from "@supabase/supabase-js";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -28,7 +28,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
 
   useEffect(() => {
     const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       setUser(user);
     };
     checkUser();
@@ -36,7 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
-    router.push('/');
+    router.push("/");
   };
 
   const menuItems = [
@@ -54,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 p-2 bg-purple-900/90 rounded-lg md:hidden"
+        className="fixed top-4 left-4 z-50 p-2 bg-[#FF6500]/70 rounded-[17px] md:hidden"
       >
         {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
@@ -66,13 +68,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
             initial={{ x: -264 }}
             animate={{ x: 0 }}
             exit={{ x: -264 }}
-            transition={{ type: 'tween', duration: 0.3 }}
-            className="fixed inset-y-0 left-0 w-64 bg-gradient-to-br from-purple-900/95 to-black/95 backdrop-blur-xl border-r border-white/10 z-40"
+            transition={{ type: "tween", duration: 0.3 }}
+            className="ml-2 mt-8 -mb-7 rounded-[17px] fixed inset-y-0 left-0 w-64 bg-[#151515] border-r border-white/10 z-40"
           >
             <div className="flex flex-col h-full pt-16 md:pt-5 pb-4">
               <div className="flex-1 flex flex-col px-6">
                 <div className="mb-8">
-                  <h1 className="text-2xl font-bold text-[#F2613F] text-transparent bg-clip-text">
+                  <h1 className="ml-4 text-2xl font-bold text-[#F2613F]">
                     thought ai
                   </h1>
                 </div>
@@ -85,11 +87,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                         <li key={item.href}>
                           <Link href={item.href} legacyBehavior>
                             <a
-                              onClick={() => window.innerWidth < 768 && setIsOpen(false)}
+                              onClick={() =>
+                                window.innerWidth < 768 && setIsOpen(false)
+                              }
                               className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                                 isActive
-                                  ? 'bg-white/15 text-white'
-                                  : 'text-white/70 hover:bg-white/10 hover:text-white'
+                                  ? "bg-white/15 text-white"
+                                  : "text-white/70 hover:bg-white/10 hover:text-white"
                               }`}
                             >
                               {item.icon}
@@ -111,7 +115,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
                 {user && (
                   <button
                     onClick={handleSignOut}
-                    className="flex items-center space-x-3 px-4 py-3 mt-4 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 transition-colors"
+                    className="mb-[50px] flex items-center space-x-3 px-4 py-3 mt-4 rounded-xl bg-red-700 text-white transition-colors"
                   >
                     <LogOut size={20} />
                     <span className="font-medium">Sign Out</span>
