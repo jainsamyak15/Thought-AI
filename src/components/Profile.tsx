@@ -282,7 +282,9 @@ const Profile: React.FC = () => {
               <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text mb-6">
                 Your Designs
               </h2>
+
               <div className="flex flex-row space-x-5 pb-4">
+                {/* Button Group */}
                 <button
                   onClick={() => handleAllImages()}
                   className="flex items-center space-x-3 px-4 py-3 mt-4 rounded-xl bg-[#FF6500]/70 transition-colors"
@@ -304,6 +306,7 @@ const Profile: React.FC = () => {
                   Banners
                 </button>
               </div>
+
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 {/* Generated Content */}
                 <div className="space-y-12">
