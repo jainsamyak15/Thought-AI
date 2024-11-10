@@ -133,7 +133,7 @@ const Profile: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-black to-purple-900 flex justify-center items-center">
+      <div className="min-h-screen bg-[#151515] rounded-[17px] flex justify-center items-center">
         <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500"></div>
       </div>
     );
@@ -141,7 +141,7 @@ const Profile: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-black to-purple-900 flex flex-col items-center justify-center p-4">
+      <div className="min-h-screen bg-[#151515] rounded-[17px] flex flex-col items-center justify-center p-4">
         <h2 className="text-4xl font-bold text-white mb-4">
           Please sign in to view your profile
         </h2>
