@@ -65,7 +65,7 @@ export default function Hoding() {
   return (
     <div className="flex justify-center items-center h-screen">
       <Canvas
-        className="h-2xl w-2xl"
+        className="h-[80px] w-[1200px] bg-[#151515]"
         camera={{ position: [0, 0, 5], fov: 45 }}
         style={{ background: "#f0f0f0", width: "1700px", height: "1150px" }}
       >

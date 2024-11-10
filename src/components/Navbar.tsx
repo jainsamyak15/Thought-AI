@@ -40,7 +40,7 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center space-x-8"
           >
-            <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r text-[#FF6500]/80 text-transparent bg-clip-text">
+            <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r text-[#FF6500]/80 ">
               thought ai
             </Link>
             
@@ -48,7 +48,7 @@ const Navbar = () => {
               {!isAuthenticated ? (
                 <>
                   <NavLink href="#features">Features</NavLink>
-                  <NavLink href="#pricing">Pricing</NavLink>
+                  {/* <NavLink href="#pricing">Pricing</NavLink> */}
                   <NavLink href="#showcase">Showcase</NavLink>
                   <NavLink href="#faq">FAQ</NavLink>
                 </>
