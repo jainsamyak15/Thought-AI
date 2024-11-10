@@ -129,17 +129,17 @@ const LogoGenerator: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black to-purple-900 text-white">
+    <div className="min-h-screen bg-[#151515] rounded-[17px] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white text-transparent bg-clip-text mb-4">
             AI Logo Generator
           </h1>
-          <p className="text-xl text-gray-300">
+          <p className="text-xl text-white italic">
             Transform your ideas into stunning logos with AI
           </p>
         </motion.div>
@@ -173,7 +173,7 @@ const LogoGenerator: React.FC = () => {
                   key={style.id}
                   type="button"
                   onClick={() => setSelectedStyle(style.id)}
-                  className={`p-4 rounded-xl border transition-all ${
+                  className={`bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300 ${
                     selectedStyle === style.id
                       ? 'border-purple-500 bg-purple-500/20'
                       : 'border-white/10 hover:border-purple-500/50'
@@ -192,7 +192,7 @@ const LogoGenerator: React.FC = () => {
                   key={scheme.id}
                   type="button"
                   onClick={() => setSelectedColors(scheme.id)}
-                  className={`p-4 rounded-xl border transition-all ${
+                  className={`bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300 ${
                     selectedColors === scheme.id
                       ? 'border-purple-500 bg-purple-500/20'
                       : 'border-white/10 hover:border-purple-500/50'
@@ -218,7 +218,7 @@ const LogoGenerator: React.FC = () => {
               className={`w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 ${
                 isLoading
                   ? 'bg-gray-600 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 transform hover:scale-[1.02]'
+                  : 'bg-[#FF6500]/70 hover:bg-[#FF6500]/80 transform hover:scale-[1.02]'
               }`}
             >
               {isLoading ? (
