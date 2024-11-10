@@ -215,12 +215,12 @@ const Profile: React.FC = () => {
           transition={{ delay: 0.2 }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
         >
-          {/* <StatsCard
+          <StatsCard
             icon={<StarIcon className="w-8 h-8 text-yellow-500" />}
             title="Total Credits"
             value={`$${(credits.total_credits / 100).toFixed(2)}`}
             description="Your initial balance"
-          /> */}
+          /> 
           {/* <StatsCard
             icon={<ChartBarIcon className="w-8 h-8 text-purple-500" />}
             title="Used Credits"
