@@ -9,6 +9,7 @@ import {
   MessageSquare,
   Sparkles,
   User as UserIcon,
+  Eye,
   LogOut,
   Menu,
   X,
@@ -41,21 +42,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
   };
 
   const menuItems = [
-    { icon: <Home size={24} />, label: "Home", href: "/" },
-    {
-      icon: <Sparkles size={24} />,
-      label: "Brand Name Generator",
-      href: "/brand-name",
-    },
-    { icon: <ImageIcon size={24} />, label: "Logo Generator", href: "/logo" },
-    { icon: <Twitter size={24} />, label: "Banner Generator", href: "/banner" },
-    {
-      icon: <MessageSquare size={24} />,
-      label: "Tagline Generator",
-      href: "/tagline",
-    },
-    { icon: null, label: "Visualise Your Brand", href: "/visualise" },
-    { icon: <UserIcon size={24} />, label: "Profile", href: "/profile" },
+    { icon: <Home size={24} />, label: 'Home', href: '/' },
+    { icon: <Sparkles size={24} />, label: 'Brand Name Generator', href: '/brand-name' },
+    { icon: <ImageIcon size={24} />, label: 'Logo Generator', href: '/logo' },
+    { icon: <Twitter size={24} />, label: 'Banner Generator', href: '/banner' },
+    { icon: <MessageSquare size={24} />, label: 'Tagline Generator', href: '/tagline' },
+    {icon: <Eye size={24} />, label: 'Visualise Your Brand', href: '/visualise'},
+    { icon: <UserIcon size={24} />, label: 'Profile', href: '/profile' },
   ];
 
   return (
