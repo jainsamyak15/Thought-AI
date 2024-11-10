@@ -170,7 +170,7 @@ const Visualise: React.FC = () => {
         pathname: "/billboard",
         query: { imageUrl: image.image_url },
       });
-    } 
+    }
     if (image.type === "logo") {
       router.push({
         pathname: "/tshirt",
@@ -179,28 +179,7 @@ const Visualise: React.FC = () => {
     }
   };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black to-purple-900 text-white">
-      <button
-        onClick={() => handleAllImages()}
-        className="flex items-center space-x-3 px-4 py-3 mt-4 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 transition-colors"
-      >
-        All Images
-      </button>
-
-      <button
-        onClick={handleLogos}
-        className="flex items-center space-x-3 px-4 py-3 mt-4 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 transition-colors"
-      >
-        Logos
-      </button>
-
-      <button
-        onClick={handleBanners}
-        className="flex items-center space-x-3 px-4 py-3 mt-4 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 transition-colors"
-      >
-        Banners
-      </button>
-
+    <div className="min-h-screen bg-[#151515] rounded-[17px] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Generated Content */}
         <div className="space-y-12">
@@ -211,9 +190,31 @@ const Visualise: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text mb-6">
+              <h2 className="text-3xl font-bold text-white text-transparent bg-clip-text mb-6">
                 Your Designs
               </h2>
+              <div className="flex flex-row space-x-5 mb-10">
+                <button
+                  onClick={() => handleAllImages()}
+                  className="flex items-center space-x-3 px-4 py-3 mt-4 rounded-xl bg-[#FF6500]/70 transition-colors"
+                >
+                  All Images
+                </button>
+
+                <button
+                  onClick={handleLogos}
+                  className="flex items-center space-x-3 px-4 py-3 mt-4 rounded-xl bg-[#FF6500]/70 transition-colors"
+                >
+                  Logos
+                </button>
+
+                <button
+                  onClick={handleBanners}
+                  className="flex items-center space-x-3 px-4 py-3 mt-4 rounded-xl bg-[#FF6500]/70 transition-colors"
+                >
+                  Banners
+                </button>
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredImages.map((image, index) => (
                   <motion.div

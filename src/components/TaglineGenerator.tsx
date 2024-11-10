@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Sparkles, Loader, Copy, CheckCircle } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import CreditDisplay from './CreditDisplay';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Sparkles, Loader, Copy, CheckCircle } from "lucide-react";
+import { supabase } from "../lib/supabase";
+import CreditDisplay from "./CreditDisplay";
 
 const TaglineGenerator: React.FC = () => {
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState("");
   const [generatedTaglines, setGeneratedTaglines] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
@@ -16,58 +16,62 @@ const TaglineGenerator: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
       if (!user) {
-        alert('Please sign in to generate taglines');
+        alert("Please sign in to generate taglines");
         setIsLoading(false);
         return;
       }
 
       const { data: creditsData } = await supabase
-        .from('user_credits')
-        .select('*')
-        .eq('user_id', user.id)
+        .from("user_credits")
+        .select("*")
+        .eq("user_id", user.id)
         .single();
 
-      if (!creditsData || (creditsData.total_credits - creditsData.used_credits) < TAGLINE_COST) {
-        alert('Insufficient credits to generate taglines');
+      if (
+        !creditsData ||
+        creditsData.total_credits - creditsData.used_credits < TAGLINE_COST
+      ) {
+        alert("Insufficient credits to generate taglines");
         setIsLoading(false);
         return;
       }
 
-      const response = await fetch('/api/generate-tagline', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/generate-tagline", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt, userId: user.id }),
       });
 
-      if (!response.ok) throw new Error('Failed to generate taglines');
+      if (!response.ok) throw new Error("Failed to generate taglines");
 
       const data = await response.json();
-      const taglines = data.tagline.split('\n').filter(Boolean);
+      const taglines = data.tagline.split("\n").filter(Boolean);
       setGeneratedTaglines(taglines);
 
       // Update credits
       await supabase
-        .from('user_credits')
+        .from("user_credits")
         .update({ used_credits: creditsData.used_credits + TAGLINE_COST })
-        .eq('user_id', user.id);
+        .eq("user_id", user.id);
 
       // Store taglines
       for (const tagline of taglines) {
-        await supabase
-          .from('generated_taglines')
-          .insert([{
+        await supabase.from("generated_taglines").insert([
+          {
             user_id: user.id,
             tagline: tagline,
-            prompt: prompt
-          }]);
+            prompt: prompt,
+          },
+        ]);
       }
-
     } catch (error) {
-      console.error('Error:', error);
-      alert('Failed to generate taglines. Please try again.');
+      console.error("Error:", error);
+      alert("Failed to generate taglines. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -79,22 +83,22 @@ const TaglineGenerator: React.FC = () => {
       setCopiedIndex(index);
       setTimeout(() => setCopiedIndex(null), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      console.error("Failed to copy:", err);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black to-purple-900 text-white">
+    <div className="min-h-screen bg-[#151515] rounded-[17px] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white text-transparent bg-clip-text mb-4">
             Tagline Generator
           </h1>
-          <p className="text-xl text-gray-300">
+          <p className="text-xl text-white italic">
             Create captivating taglines for your brand
           </p>
         </motion.div>
@@ -126,8 +130,8 @@ const TaglineGenerator: React.FC = () => {
               disabled={isLoading}
               className={`w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 ${
                 isLoading
-                  ? 'bg-gray-600 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 transform hover:scale-[1.02]'
+                  ? "bg-gray-600 cursor-not-allowed"
+                  : "bg-[#FF6500]/70 hover:bg-[#FF6500]/80 transform hover:scale-[1.02]"
               }`}
             >
               {isLoading ? (
@@ -136,7 +140,7 @@ const TaglineGenerator: React.FC = () => {
                   Generating...
                 </span>
               ) : (
-                'Generate Taglines'
+                "Generate Taglines"
               )}
             </button>
           </motion.form>
@@ -147,7 +151,9 @@ const TaglineGenerator: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               className="mt-12 space-y-4"
             >
-              <h2 className="text-2xl font-bold text-center mb-6">Your Generated Taglines</h2>
+              <h2 className="text-2xl font-bold text-center mb-6">
+                Your Generated Taglines
+              </h2>
               {generatedTaglines.map((tagline, index) => (
                 <motion.div
                   key={index}
