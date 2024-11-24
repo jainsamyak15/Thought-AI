@@ -16,8 +16,10 @@ const formatTimeAgo = (timestamp: string) => {
 
 const ActivityToast = () => {
   useEffect(() => {
+    console.log('Setting up Supabase real-time subscription...');
+
     const channel = supabase
-      .channel('activity')
+      .channel('activity-channel')
       .on(
         'postgres_changes',
         {
@@ -26,56 +28,70 @@ const ActivityToast = () => {
           table: 'generated_images',
         },
         async (payload) => {
+          console.log('Received real-time event:', payload);
+          
           try {
-            const { data: userData } = await supabase
-              .from('profiles')
-              .select('full_name, email')
-              .eq('id', payload.new.user_id)
-              .single();
+            // Get current user data
+            const { data: { user }, error } = await supabase.auth.getUser();
 
-            const userName = userData?.full_name || userData?.email?.split('@')[0] || 'Someone';
-            const type = payload.new.type;
-            const timeAgo = formatTimeAgo(payload.new.created_at);
+            if (error) {
+              console.error('Error fetching user:', error);
+              return;
+            }
 
-            toast.custom((t) => (
-              <div
-                className={`${
-                  t.visible ? 'animate-enter' : 'animate-leave'
-                } max-w-md w-full bg-[#151515] border border-white/10 shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-              >
-                <div className="flex-1 w-0 p-4">
-                  <div className="flex items-start">
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-white">
-                        {userName}
-                      </p>
-                      <p className="mt-1 text-sm text-gray-400">
-                        Generated a new {type} {timeAgo}
-                      </p>
+            console.log('Current user data:', user);
+
+            // Only show toast if it's not the current user's action
+            if (user?.id !== payload.new.user_id) {
+              const userName = 'Someone'; // For privacy, we don't show other users' names
+              const type = payload.new.type;
+              const timeAgo = formatTimeAgo(payload.new.created_at);
+
+              console.log('Showing toast for:', { userName, type, timeAgo });
+
+              toast.custom((t) => (
+                <div
+                  className={`${
+                    t.visible ? 'animate-enter' : 'animate-leave'
+                  } max-w-md w-full bg-[#151515] border border-white/10 shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+                >
+                  <div className="flex-1 w-0 p-4">
+                    <div className="flex items-start">
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-white">
+                          {userName}
+                        </p>
+                        <p className="mt-1 text-sm text-gray-400">
+                          Generated a new {type} {timeAgo}
+                        </p>
+                      </div>
                     </div>
                   </div>
+                  <div className="flex border-l border-white/10">
+                    <button
+                      onClick={() => toast.dismiss(t.id)}
+                      className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-gray-400 hover:text-gray-200 focus:outline-none"
+                    >
+                      Close
+                    </button>
+                  </div>
                 </div>
-                <div className="flex border-l border-white/10">
-                  <button
-                    onClick={() => toast.dismiss(t.id)}
-                    className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-gray-400 hover:text-gray-200 focus:outline-none"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            ), {
-              duration: 5000,
-              position: 'bottom-right',
-            });
+              ), {
+                duration: 5000,
+                position: 'bottom-right',
+              });
+            }
           } catch (error) {
             console.error('Error processing activity:', error);
           }
         }
       )
-      .subscribe();
+      .subscribe((status) => {
+        console.log('Subscription status:', status);
+      });
 
     return () => {
+      console.log('Cleaning up Supabase subscription...');
       channel.unsubscribe();
     };
   }, []);
