@@ -5,7 +5,7 @@ import { Sparkles, Download, Loader } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import CreditDisplay from './CreditDisplay';
 import { uploadImageToStorage } from '../utils/storage';
-import { verifyGeneratedImage } from '../utils/imageVerification';
+
 const STYLE_PRESETS = [
   { id: 'minimalist', name: 'Minimalist', description: 'Clean, simple, and modern designs' },
   { id: 'vintage', name: 'Vintage', description: 'Classic, retro-inspired aesthetics' },
@@ -35,7 +35,7 @@ const LogoGenerator: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-  
+
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
@@ -44,82 +44,64 @@ const LogoGenerator: React.FC = () => {
         setIsLoading(false);
         return;
       }
-  
+
       const { data: creditsData } = await supabase
         .from('user_credits')
         .select('*')
         .eq('user_id', user.id)
         .single();
-  
+
       if (!creditsData || (creditsData.total_credits - creditsData.used_credits) < LOGO_COST) {
         alert('Insufficient credits to generate logo');
         setIsLoading(false);
         return;
       }
-  
-      let isValidImage = false;
-      let attempts = 0;
-      const MAX_ATTEMPTS = 3;
-      let imageUrl;
-  
-      while (!isValidImage && attempts < MAX_ATTEMPTS) {
-        const enhancedPrompt = `${prompt}${
-          selectedStyle ? ` in ${selectedStyle} style` : ''
-        }${
-          selectedColors ? ` using ${selectedColors} color scheme` : ''
-        }`;
-  
-        const response = await fetch('/api/generate-logo', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            prompt: enhancedPrompt, 
-            userId: user.id,
-            style: selectedStyle,
-            colorScheme: selectedColors
-          }),
-        });
-  
-        if (!response.ok) throw new Error('Failed to generate logo');
-  
-        const data = await response.json();
-        imageUrl = data.imageUrl;
-        
-        // Verify the generated image
-        isValidImage = await verifyGeneratedImage(imageUrl, prompt);
-        attempts++;
-  
-        if (!isValidImage && attempts === MAX_ATTEMPTS) {
-          throw new Error('Failed to generate a valid logo after multiple attempts');
-        }
-      }
-  
-      if (imageUrl) {
-        // Upload to Supabase Storage
-        const permanentUrl = await uploadImageToStorage(imageUrl, 'logo');
-        
-        setGeneratedLogoUrl(permanentUrl);
-        setLogoCount(prev => prev + 1);
-  
-        // Update credits
-        await supabase
-          .from('user_credits')
-          .update({ used_credits: creditsData.used_credits + LOGO_COST })
-          .eq('user_id', user.id);
-  
-        // Store the generated image
-        await supabase
-          .from('generated_images')
-          .insert([
-            {
-              user_id: user.id,
-              image_url: permanentUrl,
-              type: 'logo',
-              prompt: prompt
-            }
-          ]);
-      }
-  
+
+      const enhancedPrompt = `${prompt}${
+        selectedStyle ? ` in ${selectedStyle} style` : ''
+      }${
+        selectedColors ? ` using ${selectedColors} color scheme` : ''
+      }`;
+
+      const response = await fetch('/api/generate-logo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          prompt: enhancedPrompt, 
+          userId: user.id,
+          style: selectedStyle,
+          colorScheme: selectedColors
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to generate logo');
+
+      const data = await response.json();
+      
+      // Upload to Supabase Storage
+      const permanentUrl = await uploadImageToStorage(data.imageUrl, 'logo');
+      
+      setGeneratedLogoUrl(permanentUrl);
+      setLogoCount(prev => prev + 1);
+
+      // Update credits
+      await supabase
+        .from('user_credits')
+        .update({ used_credits: creditsData.used_credits + LOGO_COST })
+        .eq('user_id', user.id);
+
+      // Store the generated image
+      await supabase
+        .from('generated_images')
+        .insert([
+          {
+            user_id: user.id,
+            image_url: permanentUrl,
+            type: 'logo',
+            prompt: enhancedPrompt
+          }
+        ]);
+
     } catch (error) {
       console.error('Error:', error);
       alert('Failed to generate logo. Please try again.');

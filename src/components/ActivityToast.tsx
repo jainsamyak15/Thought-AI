@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { supabase } from '../lib/supabase';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Sparkles, X } from 'lucide-react';
 
 const formatTimeAgo = (timestamp: string) => {
   const seconds = Math.floor((new Date().getTime() - new Date(timestamp).getTime()) / 1000);
@@ -31,7 +33,6 @@ const ActivityToast = () => {
           console.log('Received real-time event:', payload);
           
           try {
-            // Get current user data
             const { data: { user }, error } = await supabase.auth.getUser();
 
             if (error) {
@@ -41,41 +42,60 @@ const ActivityToast = () => {
 
             console.log('Current user data:', user);
 
-            // Only show toast if it's not the current user's action
             if (user?.id !== payload.new.user_id) {
-              const userName = 'Someone'; // For privacy, we don't show other users' names
+              const userName = 'Someone';
               const type = payload.new.type;
               const timeAgo = formatTimeAgo(payload.new.created_at);
 
               console.log('Showing toast for:', { userName, type, timeAgo });
 
               toast.custom((t) => (
-                <div
-                  className={`${
-                    t.visible ? 'animate-enter' : 'animate-leave'
-                  } max-w-md w-full bg-[#151515] border border-white/10 shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
-                >
-                  <div className="flex-1 w-0 p-4">
-                    <div className="flex items-start">
-                      <div className="flex-1">
-                        <p className="text-sm font-medium text-white">
-                          {userName}
-                        </p>
-                        <p className="mt-1 text-sm text-gray-400">
-                          Generated a new {type} {timeAgo}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex border-l border-white/10">
-                    <button
-                      onClick={() => toast.dismiss(t.id)}
-                      className="w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-gray-400 hover:text-gray-200 focus:outline-none"
+                <AnimatePresence>
+                  {t.visible && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                      className="max-w-md w-full bg-gradient-to-r from-[#1a1a1a] to-[#2a2a2a] border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)] backdrop-blur-xl rounded-xl overflow-hidden"
                     >
-                      Close
-                    </button>
-                  </div>
-                </div>
+                      <div className="p-4">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center space-x-3">
+                            <div className="relative">
+                              <div className="w-10 h-10 rounded-full bg-[#FF6500]/20 flex items-center justify-center">
+                                <Sparkles className="w-5 h-5 text-[#FF6500]" />
+                              </div>
+                              <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-[#1a1a1a]"></span>
+                            </div>
+                            <div>
+                              <h3 className="font-medium text-white">New Creation!</h3>
+                              <p className="text-sm text-gray-400">
+                                {userName} just created a new {type}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-1">{timeAgo}</p>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => toast.dismiss(t.id)}
+                            className="text-gray-400 hover:text-white transition-colors"
+                          >
+                            <X className="w-5 h-5" />
+                          </button>
+                        </div>
+                        <div className="mt-3">
+                          <div className="w-full h-1 bg-gradient-to-r from-[#FF6500] to-purple-600 rounded-full">
+                            <motion.div
+                              initial={{ width: "100%" }}
+                              animate={{ width: "0%" }}
+                              transition={{ duration: 5, ease: "linear" }}
+                              className="h-full bg-transparent"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               ), {
                 duration: 5000,
                 position: 'bottom-right',
@@ -96,7 +116,22 @@ const ActivityToast = () => {
     };
   }, []);
 
-  return <Toaster />;
+  return (
+    <Toaster 
+      containerStyle={{
+        bottom: 40,
+        right: 40,
+      }}
+      toastOptions={{
+        className: '',
+        style: {
+          background: 'transparent',
+          boxShadow: 'none',
+          padding: 0,
+        },
+      }}
+    />
+  );
 };
 
 export default ActivityToast;
