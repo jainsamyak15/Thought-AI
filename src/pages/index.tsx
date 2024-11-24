@@ -10,6 +10,8 @@ import { cn } from "../utils/cn";
 import { supabase } from "../lib/supabase";
 import GeneratedLogos from "../components/GeneratedLogos";
 import GridTrailEffect from "../components/GridTrailEffect";
+import ActivityToast from '../components/ActivityToast';
+
 
 const Home = () => {
   const router = useRouter();
@@ -43,6 +45,7 @@ const Home = () => {
       </div> */}
 
       <Navbar />
+      <ActivityToast />
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 md:pt-40 md:pb-32">
