@@ -1,32 +1,56 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { Sparkles, Download, Loader } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import CreditDisplay from './CreditDisplay';
-import { uploadImageToStorage } from '../utils/storage';
+import React, { useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Sparkles, Download, Loader } from "lucide-react";
+import { supabase } from "../lib/supabase";
+import CreditDisplay from "./CreditDisplay";
+import { uploadImageToStorage } from "../utils/storage";
 
 const STYLE_PRESETS = [
-  { id: 'minimalist', name: 'Minimalist', description: 'Clean, simple, and modern designs' },
-  { id: 'vintage', name: 'Vintage', description: 'Classic, retro-inspired aesthetics' },
-  { id: 'futuristic', name: 'Futuristic', description: 'Modern, tech-forward designs' },
-  { id: 'organic', name: 'Organic', description: 'Natural, flowing shapes and forms' },
-  { id: 'geometric', name: 'Geometric', description: 'Bold shapes and mathematical precision' },
-  { id: 'abstract', name: 'Abstract', description: 'Creative, non-representational designs' }
+  {
+    id: "minimalist",
+    name: "Minimalist",
+    description: "Clean, simple, and modern designs",
+  },
+  {
+    id: "vintage",
+    name: "Vintage",
+    description: "Classic, retro-inspired aesthetics",
+  },
+  {
+    id: "futuristic",
+    name: "Futuristic",
+    description: "Modern, tech-forward designs",
+  },
+  {
+    id: "organic",
+    name: "Organic",
+    description: "Natural, flowing shapes and forms",
+  },
+  {
+    id: "geometric",
+    name: "Geometric",
+    description: "Bold shapes and mathematical precision",
+  },
+  {
+    id: "abstract",
+    name: "Abstract",
+    description: "Creative, non-representational designs",
+  },
 ];
 
 const COLOR_SCHEMES = [
-  { id: 'monochrome', name: 'Monochrome', colors: ['#000000', '#FFFFFF'] },
-  { id: 'warm', name: 'Warm', colors: ['#FF6B6B', '#FFA07A', '#FFD700'] },
-  { id: 'cool', name: 'Cool', colors: ['#4A90E2', '#67B8C5', '#A0D8EF'] },
-  { id: 'earth', name: 'Earth', colors: ['#8B4513', '#DAA520', '#228B22'] },
-  { id: 'pastel', name: 'Pastel', colors: ['#FFB3BA', '#BAFFC9', '#BAE1FF'] }
+  { id: "monochrome", name: "Monochrome", colors: ["#000000", "#FFFFFF"] },
+  { id: "warm", name: "Warm", colors: ["#FF6B6B", "#FFA07A", "#FFD700"] },
+  { id: "cool", name: "Cool", colors: ["#4A90E2", "#67B8C5", "#A0D8EF"] },
+  { id: "earth", name: "Earth", colors: ["#8B4513", "#DAA520", "#228B22"] },
+  { id: "pastel", name: "Pastel", colors: ["#FFB3BA", "#BAFFC9", "#BAE1FF"] },
 ];
 
 const LogoGenerator: React.FC = () => {
-  const [prompt, setPrompt] = useState('');
-  const [selectedStyle, setSelectedStyle] = useState('');
-  const [selectedColors, setSelectedColors] = useState('');
+  const [prompt, setPrompt] = useState("");
+  const [selectedStyle, setSelectedStyle] = useState("");
+  const [selectedColors, setSelectedColors] = useState("");
   const [generatedLogoUrl, setGeneratedLogoUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [logoCount, setLogoCount] = useState(0);
@@ -37,74 +61,74 @@ const LogoGenerator: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
       if (!user) {
-        alert('Please sign in to generate logos');
+        alert("Please sign in to generate logos");
         setIsLoading(false);
         return;
       }
 
       const { data: creditsData } = await supabase
-        .from('user_credits')
-        .select('*')
-        .eq('user_id', user.id)
+        .from("user_credits")
+        .select("*")
+        .eq("user_id", user.id)
         .single();
 
-      if (!creditsData || (creditsData.total_credits - creditsData.used_credits) < LOGO_COST) {
-        alert('Insufficient credits to generate logo');
+      if (
+        !creditsData ||
+        creditsData.total_credits - creditsData.used_credits < LOGO_COST
+      ) {
+        alert("Insufficient credits to generate logo");
         setIsLoading(false);
         return;
       }
 
       const enhancedPrompt = `${prompt}${
-        selectedStyle ? ` in ${selectedStyle} style` : ''
-      }${
-        selectedColors ? ` using ${selectedColors} color scheme` : ''
-      }`;
+        selectedStyle ? ` in ${selectedStyle} style` : ""
+      }${selectedColors ? ` using ${selectedColors} color scheme` : ""}`;
 
-      const response = await fetch('/api/generate-logo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          prompt: enhancedPrompt, 
+      const response = await fetch("/api/generate-logo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: enhancedPrompt,
           userId: user.id,
           style: selectedStyle,
-          colorScheme: selectedColors
+          colorScheme: selectedColors,
         }),
       });
 
-      if (!response.ok) throw new Error('Failed to generate logo');
+      if (!response.ok) throw new Error("Failed to generate logo");
 
       const data = await response.json();
-      
+
       // Upload to Supabase Storage
-      const permanentUrl = await uploadImageToStorage(data.imageUrl, 'logo');
-      
+      const permanentUrl = await uploadImageToStorage(data.imageUrl, "logo");
+
       setGeneratedLogoUrl(permanentUrl);
-      setLogoCount(prev => prev + 1);
+      setLogoCount((prev) => prev + 1);
 
       // Update credits
       await supabase
-        .from('user_credits')
+        .from("user_credits")
         .update({ used_credits: creditsData.used_credits + LOGO_COST })
-        .eq('user_id', user.id);
+        .eq("user_id", user.id);
 
       // Store the generated image
-      await supabase
-        .from('generated_images')
-        .insert([
-          {
-            user_id: user.id,
-            image_url: permanentUrl,
-            type: 'logo',
-            prompt: enhancedPrompt
-          }
-        ]);
-
+      await supabase.from("generated_images").insert([
+        {
+          user_id: user.id,
+          image_url: permanentUrl,
+          type: "logo",
+          prompt: enhancedPrompt,
+        },
+      ]);
     } catch (error) {
-      console.error('Error:', error);
-      alert('Failed to generate logo. Please try again.');
+      console.error("Error:", error);
+      alert("Failed to generate logo. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -115,7 +139,7 @@ const LogoGenerator: React.FC = () => {
       const response = await fetch(url);
       const blob = await response.blob();
       const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = downloadUrl;
       link.download = `logo_${logoCount}_${index}.png`;
       document.body.appendChild(link);
@@ -123,8 +147,8 @@ const LogoGenerator: React.FC = () => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
-      console.error('Error:', error);
-      alert('Failed to download logo. Please try again.');
+      console.error("Error:", error);
+      alert("Failed to download logo. Please try again.");
     }
   };
 
@@ -173,10 +197,10 @@ const LogoGenerator: React.FC = () => {
                   key={style.id}
                   type="button"
                   onClick={() => setSelectedStyle(style.id)}
-                  className={`bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300 ${
+                  className={`bg-white/5 backdrop-blur-lg border rounded-xl p-6 hover:bg-white/10 transition-all duration-300 ${
                     selectedStyle === style.id
-                      ? 'border-purple-500 bg-purple-500/20'
-                      : 'border-white/10 hover:border-purple-500/50'
+                      ? "border-purple-500 bg-purple-500/20"
+                      : "border-white/10 hover:border-purple-500/50"
                   }`}
                 >
                   <h3 className="font-medium mb-1">{style.name}</h3>
@@ -192,10 +216,10 @@ const LogoGenerator: React.FC = () => {
                   key={scheme.id}
                   type="button"
                   onClick={() => setSelectedColors(scheme.id)}
-                  className={`bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300 ${
+                  className={`bg-white/5 backdrop-blur-lg border rounded-xl p-6 hover:bg-white/10 transition-all duration-300 ${
                     selectedColors === scheme.id
-                      ? 'border-purple-500 bg-purple-500/20'
-                      : 'border-white/10 hover:border-purple-500/50'
+                      ? "border-purple-500 bg-purple-500/20"
+                      : "border-white/10 hover:border-purple-500/50"
                   }`}
                 >
                   <h3 className="font-medium mb-2">{scheme.name}</h3>
@@ -217,8 +241,8 @@ const LogoGenerator: React.FC = () => {
               disabled={isLoading}
               className={`w-full py-4 rounded-xl font-semibold text-lg transition-all duration-300 ${
                 isLoading
-                  ? 'bg-gray-600 cursor-not-allowed'
-                  : 'bg-[#FF6500]/70 hover:bg-[#FF6500]/80 transform hover:scale-[1.02]'
+                  ? "bg-gray-600 cursor-not-allowed"
+                  : "bg-[#FF6500]/70 hover:bg-[#FF6500]/80 transform hover:scale-[1.02]"
               }`}
             >
               {isLoading ? (
@@ -227,7 +251,7 @@ const LogoGenerator: React.FC = () => {
                   Generating...
                 </span>
               ) : (
-                'Generate Logo'
+                "Generate Logo"
               )}
             </button>
           </motion.form>
@@ -240,7 +264,9 @@ const LogoGenerator: React.FC = () => {
             >
               {/* Main Logo */}
               <div className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6">
-                <h2 className="text-2xl font-bold text-center mb-6">Your Generated Logo</h2>
+                <h2 className="text-2xl font-bold text-center mb-6">
+                  Your Generated Logo
+                </h2>
                 <div className="relative aspect-square max-w-md mx-auto mb-6">
                   <Image
                     src={generatedLogoUrl}

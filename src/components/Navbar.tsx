@@ -40,7 +40,7 @@ const Navbar = () => {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center space-x-8"
           >
-            <Link href="/" className="text-xl sm:text-2xl font-bold bg-gradient-to-r text-[#FF6500]/80 ">
+            <Link href="/" className="text-xl sm:text-xl font-bold bg-gradient-to-r text-[#FF6500]/80 ">
               thought ai
             </Link>
             
@@ -97,7 +97,7 @@ const Navbar = () => {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-white/80 hover:text-white"
+              className="md:hidden mr-8 text-white/80 hover:text-white"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>

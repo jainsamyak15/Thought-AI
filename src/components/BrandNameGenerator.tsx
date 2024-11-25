@@ -219,7 +219,11 @@ const BrandNameGenerator: React.FC = () => {
                   key={category.id}
                   type="button"
                   onClick={() => handleMainCategorySelect(category.id)}
-                  className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300"
+                  className={`bg-white/5 backdrop-blur-lg border rounded-xl p-6 hover:bg-white/10 transition-all duration-300 ${
+                    mainCategory === category.id
+                      ? "border-purple-500 bg-purple-500/20"
+                      : "border-white/10 hover:border-purple-500/50"
+                  }`}
                 >
                   <h3 className="font-medium mb-1">{category.name}</h3>
                 </button>
@@ -246,7 +250,7 @@ const BrandNameGenerator: React.FC = () => {
                     key={category.id}
                     type="button"
                     onClick={() => setSelectedCategory(category.id)}
-                    className={`bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-all duration-300 ${
+                    className={`bg-white/5 backdrop-blur-lg border rounded-xl p-6 hover:bg-white/10 transition-all duration-300 ${
                       selectedCategory === category.id
                         ? "border-purple-500 bg-purple-500/20"
                         : "border-white/10 hover:border-purple-500/50"
