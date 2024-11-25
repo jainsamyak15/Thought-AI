@@ -1,6 +1,5 @@
 "use client";
 
-import exp from "constants";
 import { useState } from "react";
 
 interface Asset {
@@ -60,115 +59,140 @@ export default function BrandAssetGenerator() {
       setLoading(false);
     }
   };
-  console.log(description);
-  console.log(platforms);
+
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-4 text-center">
-        Brand Asset Generator
-      </h1>
+    <div className="min-h-screen bg-black text-orange-400 p-6">
+      <div className="max-w-4xl mx-auto p-8 bg-black border border-orange-500 rounded-xl shadow-lg">
+        <h1 className="text-4xl font-bold mb-6 text-center">
+          Brand Asset Generator
+        </h1>
+        <p className="text-center mb-6 text-orange-300">
+          Create stylish logos, banners, and more for your brand effortlessly.
+        </p>
 
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          Description
-        </label>
-        <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter a brief description of your brand"
-        />
-      </div>
+        {/* Description Input */}
+        <div className="mb-6">
+          <label className="block text-lg mb-2">Brand Description</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full p-4 rounded-lg bg-gray-800 text-white border border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            placeholder="Describe your brand in a few words..."
+          />
+        </div>
 
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          Target Audience
-        </label>
-        <input
-          type="text"
-          value={targetAudience}
-          onChange={(e) => setTargetAudience(e.target.value)}
-          className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Who is your audience?"
-        />
-      </div>
+        {/* Target Audience Input */}
+        <div className="mb-6">
+          <label className="block text-lg mb-2">Target Audience</label>
+          <input
+            type="text"
+            value={targetAudience}
+            onChange={(e) => setTargetAudience(e.target.value)}
+            className="w-full p-4 rounded-lg bg-gray-800 text-white border border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            placeholder="Who is your target audience?"
+          />
+        </div>
 
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          Platforms
-        </label>
-        <select
-          multiple
-          value={platforms}
-          onChange={(e) =>
-            setPlatforms(Array.from(e.target.selectedOptions, (o) => o.value))
-          }
-          className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="Youtube">YouTube</option>
-          <option value="Twitter">Twitter</option>
-          <option value="Instagram">Instagram</option>
-        </select>
-      </div>
+        {/* Platforms Selection */}
+        <div className="mb-6">
+          <label className="block text-lg mb-2">Select Platform</label>
+          <select
+            value={platforms[0] || ""} // Use the first selected platform or empty
+            onChange={(e) => setPlatforms([e.target.value])} // Update state with single selection
+            className="w-full p-4 rounded-lg bg-gray-800 text-white border border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400"
+          >
+            <option value="" disabled>
+              Select a platform
+            </option>
+            <option value="Youtube">YouTube</option>
+            <option value="Twitter">Twitter</option>
+            <option value="Instagram">Instagram</option>
+          </select>
+        </div>
 
-      <div className="mb-4">
-        <button
-          onClick={handleGenerateName}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
-          disabled={loading}
-        >
-          Generate Brand Name
-        </button>
-        {aiSuggestedName && (
-          <p className="mt-2 text-gray-700">
-            AI Suggested Name: <strong>{aiSuggestedName}</strong>
-          </p>
+        {/* Generate Brand Name */}
+        <div className="mb-6">
+          <button
+            onClick={handleGenerateName}
+            disabled={loading}
+            className={`w-full py-3 rounded-lg font-semibold ${
+              loading
+                ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                : "bg-orange-500 hover:bg-orange-600 text-black"
+            }`}
+          >
+            {loading ? "Generating..." : "Generate Brand Name"}
+          </button>
+          {aiSuggestedName && (
+            <p className="mt-4 text-center text-lg">
+              AI Suggested Name:{" "}
+              <span className="font-bold text-orange-300">
+                {aiSuggestedName}
+              </span>
+            </p>
+          )}
+        </div>
+
+        {/* Custom Brand Name Input */}
+        <div className="mb-6">
+          <label className="block text-lg mb-2">
+            Custom Brand Name (optional)
+          </label>
+          <input
+            type="text"
+            value={customBrandName}
+            onChange={(e) => setCustomBrandName(e.target.value)}
+            className="w-full p-4 rounded-lg bg-gray-800 text-white border border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            placeholder="Enter your custom brand name"
+          />
+        </div>
+
+        {/* Generate Assets */}
+        <div>
+          <button
+            onClick={handleGenerateAssets}
+            disabled={loading || (!customBrandName && !aiSuggestedName)}
+            className={`w-full py-3 rounded-lg font-semibold ${
+              loading || (!customBrandName && !aiSuggestedName)
+                ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                : "bg-green-500 hover:bg-green-600 text-black"
+            }`}
+          >
+            {loading ? "Generating Assets..." : "Generate Assets"}
+          </button>
+        </div>
+
+        {/* Display Generated Assets */}
+        {assets && (
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold text-center mb-4">
+              Generated Assets
+            </h2>
+            <div className="space-y-6">
+              {Object.entries(assets).map(([platform, { logo, banner }]) => (
+                <div
+                  key={platform}
+                  className="p-4 bg-gray-800 rounded-lg shadow-md"
+                >
+                  <h3 className="text-lg font-semibold mb-2">{platform}</h3>
+                  <img
+                    src={logo}
+                    alt={`${platform} Logo`}
+                    className="mb-4 rounded-md"
+                  />
+                  {banner && (
+                    <img
+                      src={banner}
+                      alt={`${platform} Banner`}
+                      className="rounded-md"
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">
-          Custom Brand Name (optional)
-        </label>
-        <input
-          type="text"
-          value={customBrandName}
-          onChange={(e) => setCustomBrandName(e.target.value)}
-          className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter your custom brand name (optional)"
-        />
-      </div>
-
-      <button
-        onClick={handleGenerateAssets}
-        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
-        disabled={loading || (!customBrandName && !aiSuggestedName)}
-      >
-        Generate Assets
-      </button>
-
-      {assets && (
-        <div className="mt-6">
-          <h2 className="text-xl font-bold mb-2">Generated Assets</h2>
-          {Object.entries(assets).map(([platform, { logo, banner }]) => (
-            <div key={platform} className="mb-4">
-              <h3 className="text-lg font-semibold">{platform}</h3>
-              <img
-                src={logo}
-                alt={`${platform} Logo`}
-                className="mb-2 rounded"
-              />
-              {banner && (
-                <img
-                  src={banner}
-                  alt={`${platform} Banner`}
-                  className="rounded"
-                />
-              )}
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

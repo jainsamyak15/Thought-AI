@@ -13,6 +13,9 @@ import {
   LogOut,
   Menu,
   X,
+  Lightbulb ,
+  Brush,
+  PenTool,
 } from "lucide-react";
 import { supabase } from "../lib/supabase";
 import { User } from "@supabase/supabase-js";
@@ -47,6 +50,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen }) => {
     { icon: <ImageIcon size={24} />, label: 'Logo Generator', href: '/logo' },
     { icon: <Twitter size={24} />, label: 'Banner Generator', href: '/banner' },
     { icon: <MessageSquare size={24} />, label: 'Tagline Generator', href: '/tagline' },
+    { icon: <Lightbulb size={24} />, label: 'Brand Asset Generator', href: '/brand-asset' },
     {icon: <Eye size={24} />, label: 'Visualise Your Brand', href: '/visualise'},
     { icon: <UserIcon size={24} />, label: 'Profile', href: '/profile' },
   ];
