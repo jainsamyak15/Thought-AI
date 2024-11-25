@@ -203,7 +203,7 @@ const Profile: React.FC = () => {
               <h1 className="text-3xl sm:text-4xl font-bold text-white text-transparent bg-clip-text mb-2">
                 {user.user_metadata?.full_name || "Designer"}
               </h1>
-              <p className="text-lg text-white italic">{user.email}</p>
+              <p className="text-lg text-white italic">@{user.email ? user.email.split('@')[0] : ''}</p>
             </div>
           </div>
         </motion.div>
