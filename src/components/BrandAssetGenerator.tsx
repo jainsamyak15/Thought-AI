@@ -27,6 +27,7 @@ export default function BrandAssetGenerator() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ description, targetAudience, platforms }),
       });
+
       const data = await response.json();
       setAiSuggestedName(data.brandName || "No suggestion available");
     } catch (error) {
@@ -50,6 +51,7 @@ export default function BrandAssetGenerator() {
           customBrandName: customBrandName || aiSuggestedName,
         }),
       });
+
       const data = await response.json();
       setAssets(data.assets);
     } catch (error) {
@@ -58,14 +60,18 @@ export default function BrandAssetGenerator() {
       setLoading(false);
     }
   };
-console.log(description)
-console.log(platforms)
+  console.log(description);
+  console.log(platforms);
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold mb-4 text-center">Brand Asset Generator</h1>
-      
+      <h1 className="text-2xl font-bold mb-4 text-center">
+        Brand Asset Generator
+      </h1>
+
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Description</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Description
+        </label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -75,7 +81,9 @@ console.log(platforms)
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Target Audience</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Target Audience
+        </label>
         <input
           type="text"
           value={targetAudience}
@@ -83,6 +91,24 @@ console.log(platforms)
           className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Who is your audience?"
         />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">
+          Platforms
+        </label>
+        <select
+          multiple
+          value={platforms}
+          onChange={(e) =>
+            setPlatforms(Array.from(e.target.selectedOptions, (o) => o.value))
+          }
+          className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="Youtube">YouTube</option>
+          <option value="Twitter">Twitter</option>
+          <option value="Instagram">Instagram</option>
+        </select>
       </div>
 
       <div className="mb-4">
@@ -101,7 +127,9 @@ console.log(platforms)
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Custom Brand Name (optional)</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Custom Brand Name (optional)
+        </label>
         <input
           type="text"
           value={customBrandName}
@@ -109,20 +137,6 @@ console.log(platforms)
           className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="Enter your custom brand name (optional)"
         />
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Platforms</label>
-        <select
-          multiple
-          value={platforms}
-          onChange={(e) => setPlatforms(Array.from(e.target.selectedOptions, (o) => o.value))}
-          className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="Youtube">YouTube</option>
-          <option value="Twitter">Twitter</option>
-          <option value="Instagram">Instagram</option>
-        </select>
       </div>
 
       <button
@@ -139,8 +153,18 @@ console.log(platforms)
           {Object.entries(assets).map(([platform, { logo, banner }]) => (
             <div key={platform} className="mb-4">
               <h3 className="text-lg font-semibold">{platform}</h3>
-              <img src={logo} alt={`${platform} Logo`} className="mb-2 rounded" />
-              {banner && <img src={banner} alt={`${platform} Banner`} className="rounded" />}
+              <img
+                src={logo}
+                alt={`${platform} Logo`}
+                className="mb-2 rounded"
+              />
+              {banner && (
+                <img
+                  src={banner}
+                  alt={`${platform} Banner`}
+                  className="rounded"
+                />
+              )}
             </div>
           ))}
         </div>
@@ -148,4 +172,3 @@ console.log(platforms)
     </div>
   );
 }
-
