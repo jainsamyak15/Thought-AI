@@ -16,10 +16,11 @@ export default function BrandAssetGenerator() {
   const [aiSuggestedName, setAiSuggestedName] = useState("");
   const [platforms, setPlatforms] = useState<string[]>([]);
   const [assets, setAssets] = useState<Assets | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loadingName, setLoadingName] = useState(false); // Separate state for name generation
+  const [loadingAssets, setLoadingAssets] = useState(false); // Separate state for asset generation
 
   const handleGenerateName = async () => {
-    setLoading(true);
+    setLoadingName(true);
     try {
       const response = await fetch("/api/brand-assets", {
         method: "POST",
@@ -33,12 +34,12 @@ export default function BrandAssetGenerator() {
       console.error("Error generating brand name:", error);
       setAiSuggestedName("Error occurred. Please try again.");
     } finally {
-      setLoading(false);
+      setLoadingName(false);
     }
   };
 
   const handleGenerateAssets = async () => {
-    setLoading(true);
+    setLoadingAssets(true);
     try {
       const response = await fetch("/api/brand-assets", {
         method: "POST",
@@ -56,7 +57,7 @@ export default function BrandAssetGenerator() {
     } catch (error) {
       console.error("Error generating assets:", error);
     } finally {
-      setLoading(false);
+      setLoadingAssets(false);
     }
   };
 
@@ -97,8 +98,8 @@ export default function BrandAssetGenerator() {
         <div className="mb-6">
           <label className="block text-lg mb-2">Select Platform</label>
           <select
-            value={platforms[0] || ""} // Use the first selected platform or empty
-            onChange={(e) => setPlatforms([e.target.value])} // Update state with single selection
+            value={platforms[0] || ""}
+            onChange={(e) => setPlatforms([e.target.value])}
             className="w-full p-4 rounded-lg bg-gray-800 text-white border border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400"
           >
             <option value="" disabled>
@@ -114,14 +115,14 @@ export default function BrandAssetGenerator() {
         <div className="mb-6">
           <button
             onClick={handleGenerateName}
-            disabled={loading}
+            disabled={loadingName}
             className={`w-full py-3 rounded-lg font-semibold ${
-              loading
+              loadingName
                 ? "bg-gray-700 text-gray-400 cursor-not-allowed"
                 : "bg-orange-500 hover:bg-orange-600 text-black"
             }`}
           >
-            {loading ? "Generating..." : "Generate Brand Name"}
+            {loadingName ? "Generating..." : "Generate Brand Name"}
           </button>
           {aiSuggestedName && (
             <p className="mt-4 text-center text-lg">
@@ -151,14 +152,14 @@ export default function BrandAssetGenerator() {
         <div>
           <button
             onClick={handleGenerateAssets}
-            disabled={loading || (!customBrandName && !aiSuggestedName)}
+            disabled={loadingAssets || (!customBrandName && !aiSuggestedName)}
             className={`w-full py-3 rounded-lg font-semibold ${
-              loading || (!customBrandName && !aiSuggestedName)
-                ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                : "bg-green-500 hover:bg-green-600 text-black"
+              loadingAssets || (!customBrandName && !aiSuggestedName)
+                ? "bg-gradient-to-r from-gray-500 to-gray-700 text-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-[#FF6500] to-[#FF6500]/80 text-white hover:opacity-90"
             }`}
           >
-            {loading ? "Generating Assets..." : "Generate Assets"}
+            {loadingAssets ? "Generating Assets..." : "Generate Assets"}
           </button>
         </div>
 
