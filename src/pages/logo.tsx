@@ -7,7 +7,7 @@ const LogoPage: React.FC = () => {
   return (
     <Layout>
       <Head>
-        <title>AI Design Studio - Logo Generator</title>
+        <title>Thought AI - Logo Generator</title>
         <meta name="description" content="Generate unique logos for your brand with AI" />
       </Head>
       <LogoGenerator />

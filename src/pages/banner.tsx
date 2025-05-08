@@ -7,7 +7,7 @@ const BannerPage: React.FC = () => {
   return (
     <Layout>
       <Head>
-        <title>AI Design Studio - Twitter Banner Generator</title>
+        <title>Thought AI - Twitter Banner Generator</title>
         <meta name="description" content="Generate eye-catching Twitter banners with AI" />
       </Head>
       <TwitterBannerGenerator />

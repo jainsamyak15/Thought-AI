@@ -7,7 +7,7 @@ const TaglinePage: React.FC = () => {
   return (
     <Layout>
       <Head>
-        <title>AI Design Studio - Tagline Generator</title>
+        <title>Thought AI - Tagline Generator</title>
         <meta name="description" content="Generate catchy taglines for your brand with AI" />
       </Head>
       <TaglineGenerator />

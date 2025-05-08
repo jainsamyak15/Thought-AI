@@ -37,7 +37,7 @@ export default function Login() {
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-            Welcome to AI Design Studio
+            Welcome to Thought AI
           </h1>
           <p className="text-gray-600 mt-2">Sign in to access all features</p>
         </div>

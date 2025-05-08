@@ -7,7 +7,7 @@ const BrandNamePage: React.FC = () => {
   return (
     <Layout>
       <Head>
-        <title>AI Design Studio - Brand Name Generator</title>
+        <title>Thought AI - Brand Name Generator</title>
         <meta name="description" content="Generate unique brand names for your startup" />
       </Head>
       <BrandNameGenerator />

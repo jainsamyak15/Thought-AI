@@ -7,7 +7,7 @@ const ProfilePage: React.FC = () => {
   return (
     <Layout>
       <Head>
-        <title>AI Design Studio - Profile</title>
+        <title>Thought AI - Profile</title>
         <meta name="description" content="View your generated designs" />
       </Head>
       <Profile />

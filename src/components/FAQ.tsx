@@ -5,7 +5,7 @@ const faqs = [
   {
     question: "How does Thought AI work?",
     answer:
-      "AI Design Studio uses advanced artificial intelligence to generate professional designs based on your input. Simply describe what you want, and our AI will create unique visuals tailored to your needs.",
+      "Thought AI uses advanced artificial intelligence to generate professional designs based on your input. Simply describe what you want, and our AI will create unique visuals tailored to your needs.",
   },
   {
     question: "What types of designs can I create?",
@@ -43,7 +43,7 @@ const FAQ = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-xl text-white italic">
-            Everything you need to know about AI Design Studio
+            Everything you need to know about Thought AI
           </p>
         </motion.div>
 
